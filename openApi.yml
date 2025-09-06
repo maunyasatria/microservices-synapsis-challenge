@@ -1,0 +1,109 @@
+openapi: 3.0.3
+info:
+  title: Order Service API
+  version: 1.0.0
+  description: REST API for managing customer orders.
+
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Local Development Server
+
+paths:
+  /orders:
+    post:
+      summary: Create a new order
+      operationId: createOrder
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrderRequest"
+      responses:
+        "200":
+          description: Order successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateOrderResponse"
+        "400":
+          description: Invalid request or insufficient stock
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    CreateOrderRequest:
+      type: object
+      required:
+        - user_id
+        - idempotency_key
+        - items
+      properties:
+        user_id:
+          type: string
+          example: "12345"
+        idempotency_key:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+
+    OrderItem:
+      type: object
+      required:
+        - sku
+        - qty
+      properties:
+        sku:
+          type: string
+          example: "PROD-001"
+        qty:
+          type: integer
+          minimum: 1
+          example: 2
+
+    CreateOrderResponse:
+      type: object
+      properties:
+        order_id:
+          type: string
+          example: "ORD-2025-00001"
+        status:
+          type: string
+          enum: [CONFIRMED, REJECTED]
+          example: "CONFIRMED"
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Insufficient stock for sku PROD-001"

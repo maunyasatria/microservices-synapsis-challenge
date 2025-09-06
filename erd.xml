@@ -1,0 +1,37 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36" version="28.2.0">
+  <diagram id="erd" name="Microservices ERD">
+    <mxGraphModel dx="1426" dy="777" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="products" value="products&#xa;- sku (PK)&#xa;- name&#xa;- total_stock&#xa;- reserved_stock" style="shape=rectangle;whiteSpace=wrap;rounded=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="40" y="80" width="180" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="reservations" value="reservations&#xa;- reservation_id (PK)&#xa;- sku (FK)&#xa;- qty&#xa;- status&#xa;- created_at&#xa;- updated_at" style="shape=rectangle;whiteSpace=wrap;rounded=0;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="40" y="220" width="220" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="orders" value="orders&#xa;- id (PK)&#xa;- user_id&#xa;- status&#xa;- idempotency_key&#xa;- created_at" style="shape=rectangle;whiteSpace=wrap;rounded=0;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+          <mxGeometry x="400" y="60" width="200" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="order_items" value="order_items&#xa;- id (PK)&#xa;- order_id (FK)&#xa;- sku&#xa;- qty" style="shape=rectangle;whiteSpace=wrap;rounded=0;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="610" y="200" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="inventory_reservations" value="inventory_reservations&#xa;- id (PK)&#xa;- order_id (FK)&#xa;- reservation_id (FK)&#xa;- sku&#xa;- qty&#xa;- created_at" style="shape=rectangle;whiteSpace=wrap;rounded=0;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+          <mxGeometry x="380" y="380" width="240" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="reservations" target="products" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="order_items" target="orders" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="inventory_reservations" target="orders" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="inventory_reservations" target="reservations" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

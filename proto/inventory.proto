@@ -1,0 +1,18 @@
+syntax = "proto3";
+package inventory.v1;
+option go_package = "github.com/synapsis-challenge/gen/inventory/v1;inventoryv1";
+
+message CheckStockRequest { string sku = 1; int32 qty = 2; }
+message CheckStockResponse { bool available = 1; int32 available_qty = 2; }
+
+message ReserveStockRequest { string sku = 1; int32 qty = 2; string correlation_id = 3; }
+message ReserveStockResponse { string reservation_id = 1; string status = 2; }
+
+message ReleaseStockRequest { string reservation_id = 1; }
+message ReleaseStockResponse { string status = 1; }
+
+service InventoryService {
+  rpc CheckStock(CheckStockRequest) returns (CheckStockResponse);
+  rpc ReserveStock(ReserveStockRequest) returns (ReserveStockResponse);
+  rpc ReleaseStock(ReleaseStockRequest) returns (ReleaseStockResponse);
+}

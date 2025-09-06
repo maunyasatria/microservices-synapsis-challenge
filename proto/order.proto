@@ -1,0 +1,11 @@
+syntax = "proto3";
+package order.v1;
+option go_package = "github.com/synapsis-challenge/gen/order/v1;orderv1";
+
+message OrderItem { string sku = 1; int32 qty = 2; }
+message CreateOrderRequest { string user_id = 1; repeated OrderItem items = 2; string idempotency_key = 3; }
+message CreateOrderResponse { string order_id = 1; string status = 2; }
+
+service OrderService {
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+}

@@ -1,0 +1,176 @@
+{
+	"info": {
+		"_postman_id": "fe651412-a226-4f18-86bd-f986d8afe48e",
+		"name": "Microservices API Collection",
+		"description": "Unified Postman Collection for Order, Inventory, User, and Notification Services",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14052999"
+	},
+	"item": [
+		{
+			"name": "Order Service (REST)",
+			"item": [
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": \"12345\",\n  \"idempotency_key\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"items\": [\n    {\"sku\": \"PROD-001\", \"qty\": 2},\n    {\"sku\": \"PROD-002\", \"qty\": 1}\n  ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inventory Service (gRPC)",
+			"item": [
+				{
+					"name": "CheckStock",
+					"request": {
+						"method": "GRPC",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sku\": \"PROD-001\"\n}"
+						},
+						"url": {
+							"raw": "grpc://localhost:50051",
+							"protocol": "grpc",
+							"host": [
+								"localhost"
+							],
+							"port": "50051"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ReserveStock",
+					"request": {
+						"method": "GRPC",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sku\": \"PROD-001\", \"qty\": 2\n}"
+						},
+						"url": {
+							"raw": "grpc://localhost:50051",
+							"protocol": "grpc",
+							"host": [
+								"localhost"
+							],
+							"port": "50051"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ReleaseStock",
+					"request": {
+						"method": "GRPC",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sku\": \"PROD-001\", \"qty\": 2\n}"
+						},
+						"url": {
+							"raw": "grpc://localhost:50051",
+							"protocol": "grpc",
+							"host": [
+								"localhost"
+							],
+							"port": "50051"
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Service (gRPC)",
+			"item": [
+				{
+					"name": "AuthenticateUser",
+					"request": {
+						"method": "GRPC",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"john.doe\", \"password\": \"secret123\"\n}"
+						},
+						"url": {
+							"raw": "grpc://localhost:50052",
+							"protocol": "grpc",
+							"host": [
+								"localhost"
+							],
+							"port": "50052"
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notification Service (gRPC)",
+			"item": [
+				{
+					"name": "SendNotification",
+					"request": {
+						"method": "GRPC",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": \"12345\", \"message\": \"Your order ORD-2025-00001 has been confirmed.\"\n}"
+						},
+						"url": {
+							"raw": "grpc://localhost:50053",
+							"protocol": "grpc",
+							"host": [
+								"localhost"
+							],
+							"port": "50053"
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "jwt_token",
+			"value": "your-jwt-token-here"
+		},
+		{
+			"key": "proto_dir",
+			"value": "/path/to/protos"
+		}
+	]
+}

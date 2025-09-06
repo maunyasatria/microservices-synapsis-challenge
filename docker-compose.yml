@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  order-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: orders
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports: "5432"
+    volumes:
+      - order-db-data:/var/lib/postgresql/data
+
+  inventory-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: inventory
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports: "5432"
+    volumes:
+      - inventory-db-data:/var/lib/postgresql/data
+
+  inventory:
+    build: ./inventory-service
+    depends_on: [inventory-db]
+    environment:
+      - DATABASE_URL=postgres://inv_user:secret@inventory-db:5432/inventory?sslmode=disable
+    ports:
+      - "50051:50051"
+
+  order:
+    build: ./order-service
+    depends_on: [order-db, inventory]
+    environment:
+      - DATABASE_URL=postgres://order_user:secret@order-db:5432/orders?sslmode=disable
+      - INVENTORY_ADDR=inventory:50051
+    ports:
+      - "8080:8080"
+
+volumes:
+  order-db-data:
+  inventory-db-data:
