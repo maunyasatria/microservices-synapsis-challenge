@@ -1,4 +1,4 @@
-# Microservices Go Skeleton
+# Microservices Go Synapsis-Challenge
 
 This archive contains two minimal services:
 - inventory-service (gRPC) on :50051
